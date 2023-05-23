@@ -50,10 +50,10 @@ data() {
     };
   },
 created(){
-
+    let mytoken = localStorage.getItem("access-token")
 
     axios({
-      headers: {"access-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJob25nIiwidXNlck5vIjo1LCJleHAiOjE2ODQ3Mzc3MDB9.BC6jgRkelvR2Lv_S5Q4kRa64FO2x5xH4AvW-9IUhTKA"},
+      headers: {"access-token":mytoken},
       method:'get',
       url:`http://localhost:9999/api-user/users`,
       responseType:'json'

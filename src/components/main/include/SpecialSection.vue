@@ -1,48 +1,30 @@
 <template>
-  <div class="special-component">
-    <div class="border"></div>
-    <div class="content">
+  <v-card class="special-component">
+    <v-card-text>
       <div class="title">제목입니다!@!@!</div>
       <div class="subtitle">로그인 후 사용해보세요!</div>
       <div class="text">나만의 운동 루틴을 만들고 매일 인증해보세요!!</div>
-    </div>
-  </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
 export default {
   name: 'SpecialComponent',
-  props: {
-    title: String,
-    subtitle: String,
-    content: String,
-  },
 };
 </script>
 
 <style scoped>
 .special-component {
-  position: relative;
-}
-.border {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   border-radius: 10px;
   border: 2px solid #B2E1C5;
-  background-color: transparent;
-}
-
-.content {
   background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
   padding: 20px;
 }
+
 .title {
   color: white;
-  font-size: 50px;
+  font-size: 20px;
   font-weight: bold;
   user-select: text;
 }

@@ -79,8 +79,7 @@ export default {
   },
   methods: {
     navigateTo(route) {
-      // 페이지 이동 로직 구현 (예: Vue Router를 사용하여 route로 이동)
-      console.log('이동:', route);
+      this.$router.push(route);
     },
   },
 };
