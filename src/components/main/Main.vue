@@ -3,7 +3,7 @@
     <v-container class="main" ref="mainPage" fluid>
       <v-row>
         <v-col>
-          <v-main style="min-height: 1000px; color:white;">
+          <v-main style="min-height: 700px; color:white;">
             첫 번째 메인 구역
             <special-component />
           </v-main>
@@ -11,14 +11,15 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-main style="min-height: 1000px; color:white;">
+          <v-main style="min-height: 700px; color:white;">
             두 번째 메인 구역
+            <youtube-component/>
           </v-main>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <v-main style="min-height: 1000px; color:white;">
+          <v-main style="min-height: 700px; color:white;">
             세 번째 메인 구역
           </v-main>
         </v-col>
@@ -28,12 +29,15 @@
 </template>
 
 <script>
-import specialComponent from "./include/SpecialSection.vue"
+import specialComponent from "./include/SpecialSection.vue";
+import YoutubeComponent from './include/YoutubeSection.vue';
+
 
 export default {
   name: "Main",
   components:{
     specialComponent,
+    YoutubeComponent
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
@@ -54,6 +58,7 @@ export default {
 
 <style>
 .main{
+  background-color: black;
   background-image: url('@/assets/universe.jpg');
   background-size: cover;
   background-position: center;
