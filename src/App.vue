@@ -2,17 +2,18 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color=""
+      height="110"
       dark
     >
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
+          class="shrink mt-1 hidden-sm-and-down ml-2"
           contain
-          min-width="100"
-          src="./assets/bong.gif"
-          width="100"
+          min-width="200"
+          src="./assets/blacklogo.gif"
+          width="200"
         />
       </div>
 
@@ -23,7 +24,7 @@
         target="_blank"
         text
       >
-        <span class="mr-2">노션으로 이동</span>
+        <span class="mr-2" style="font-size: 20px;">노션으로 이동</span>
         <v-icon dark right>mdi-check-circle</v-icon>
       </v-btn>
       <v-btn
@@ -31,13 +32,30 @@
         target="_blank"
         text
       >
-        <span class="mr-2">깃허브로 이동</span>
+        <span class="mr-2" style="font-size: 20px;">깃허브로 이동</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-      <router-link to="/sign-in" >
-        <span class="mr-2" style="color:red">로그인</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </router-link>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            v-on="on"
+            text
+          >
+            <v-icon class="mr-2" size="40">mdi-account-circle</v-icon>
+            <span class="text--primary" style="font-size: 20px;"></span>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="item in userMenuItems"
+            :key="item.title"
+            link
+            @click="navigateTo(item.route)"
+          >
+            <v-list-item-title class="text-lg">{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-main>
@@ -51,8 +69,19 @@
 export default {
   name: 'App',
 
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      userMenuItems: [
+        { title: '회원가입', route: '/sign-up' },
+        { title: '로그인', route: '/sign-in' },
+      ],
+    };
+  },
+  methods: {
+    navigateTo(route) {
+      // 페이지 이동 로직 구현 (예: Vue Router를 사용하여 route로 이동)
+      console.log('이동:', route);
+    },
+  },
 };
 </script>
