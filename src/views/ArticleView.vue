@@ -1,7 +1,6 @@
 <template>
   <div>
     <h2>게시글</h2>
-    <!-- <article-create-page/> -->
   <router-view/>
   </div>
 </template>

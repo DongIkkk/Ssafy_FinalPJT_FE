@@ -9,7 +9,7 @@
           <v-text-field v-model="password" label="비밀번호" outlined type="password"></v-text-field>
 
           <v-row justify="center">
-            <v-btn class="mr-2" color="primary" @click="login">로그인</v-btn>
+            <v-btn class="mr-2" color="primary" @click="signin">로그인</v-btn>
             <router-link to="/sign-up">
               <span class="mr-2" style="color:red">회원가입</span>
               <v-icon>mdi-open-in-new</v-icon>
@@ -23,6 +23,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from 'vuex';
 
 export default {
   name: "Login",
@@ -33,7 +34,8 @@ export default {
     };
   },
   methods: {
-    login() {
+    ...mapActions(['login']),
+    signin() {
       axios
         .post("http://localhost:9999/api-user/tokenLogin", {
           userId: this.userId,
@@ -42,20 +44,41 @@ export default {
         .then(({ data }) => {
           let restoken = data["access-token"];
           localStorage.setItem("access-token", restoken);
-          console.log(data);
-          this.moveList();
+
+          // 토큰을 받은 후 유저 정보 요청
+          this.fetchUserInfo(restoken);
         })
         .catch((error) => {
           console.error(error);
           alert("로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요");
         });
     },
+    fetchUserInfo(token) {
+      axios({
+        headers: { 'access-token': token },
+        method: 'get',
+        url: 'http://localhost:9999/api-user/user',
+        responseType: 'json',
+      }).then((response) => {
+        const user = response.data;
+        alert(user)
+        // Vuex의 login 액션을 호출하여 유저 정보를 저장
+        this.login(user);
+        
+        // 로그인 후 페이지 이동
+        this.moveList();
+      }).catch((error) => {
+        console.error(error);
+        alert("유저 정보를 가져오는데 실패했습니다.");
+      });
+    },
     moveList() {
-      this.$router.push("/user-info");
+      this.$router.push("/");
     },
   },
 };
 </script>
+
 
 <style scoped>
 .text-center {

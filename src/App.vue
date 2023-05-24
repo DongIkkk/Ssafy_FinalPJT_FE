@@ -1,34 +1,24 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color=""
-      height="110"
-      dark
-    >
+    <v-app-bar app color="" height="115" dark>
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down ml-2"
-          contain
-          min-width="200"
-          src="./assets/blacklogo.gif"
-          width="200"
-          @click="navigateToMainPage"
-          style="cursor: pointer"
+          alt="Vuetify Name" class="shrink mt-1 hidden-sm-and-down ml-2" contain min-width="200"
+          src="./assets/blacklogo.gif" width="200" style="cursor: pointer"
+          @click="navigateToMainPage"          
         />
       </div>
 
       <v-spacer></v-spacer>
 
-      <span class="mr-2" style="font-size: 30px;">{{user.userName}}님 환영합니다.</span>
+      <span class="mr-2" style="font-size: 30px;">{{ loggedInUser.userName }}님 환영합니다.</span>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-avatar v-on="on" size="40" :class="{ 'profile-glow': isHover }"
             @mouseenter="isHover = true"
             @mouseleave="isHover = false" >
-            <template v-if="user.profileImgName">
-              <img :src="getProfileImagePath(user.profileImgName)" alt="" style="cursor: pointer">
+            <template v-if="loggedInUser.profileImgName">
+              <img :src="getProfileImagePath(loggedInUser.profileImgName)" alt="" style="cursor: pointer">
             </template>
           </v-avatar>
         </template>
@@ -48,20 +38,20 @@
     <v-main>
       <router-view/>
     </v-main>
+
   </v-app>
 </template>
 
 <script>
-import axios from "axios";
+
+import { mapState, mapActions } from 'vuex';
+
 export default {
   name: 'App',
 
   data() {
     return {
-      user:{
-        userName:'손',
-        profileImgName: 'profile_default_test.png',
-      },
+      // 메뉴 드롭다운을 위한 라우트값과 아이템
       userMenuItems: [
         { title: '회원가입', route: '/sign-up' },
         { title: '로그인', route: '/sign-in' },
@@ -70,9 +60,15 @@ export default {
       isHover: false,
     };
   },
+  computed: {
+      ...mapState({
+      loggedInUser: state => state.loginUser,
+    }),
+  },
   methods: {
+    ...mapActions(['logout']),
     navigateToMainPage() {
-      this.$router.replace('/'); // 메인 페이지의 경로로 수정해주세요
+      this.$router.push('/'); // 메인 페이지의 경로로 수정해주세요
     },
     getProfileImagePath(fileName) {
       return require(`./assets/profile_img/${fileName}`);
@@ -80,26 +76,18 @@ export default {
     navigateTo(route) {
       if (route === '/logout') {
         localStorage.removeItem('access-token');
-        this.user.userName = '손';
-        this.$router.push('sign-in');
+        let logoutdefault={
+            userName:'손',
+            profileImgName: 'profile_default_test.png',
+          };
+        this.logout(logoutdefault);
+        this.$router.push('/sign-in');
       } else {
         this.$router.push(route);
       }
     },
   },
-  created(){  
-    let mytoken = localStorage.getItem("access-token")
-
-    axios({
-      headers: {"access-token":mytoken},
-      method:'get',
-      url:`http://localhost:9999/api-user/user`,
-      responseType:'json'
-    }).then((response) => {
-        console.log(response.data);
-        this.user = response.data;
-      })
-  },
+  
 };
 </script>
 
