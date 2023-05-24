@@ -1,5 +1,4 @@
 <template>
-
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
@@ -16,45 +15,89 @@
       </v-col>
     </v-row>
   </v-container>
-
-  <!-- <div>
-    <h2>게시글 수정</h2>
-    <fieldset>
-      <legend>수정</legend>
-      <label for="title">제목 : </label>
-      <input type="text" id="title" v-model="board.title" /><br />
-      <label for="writer">쓴이 : </label>
-      <input type="text" id="writer" readonly v-model="board.writer" /><br />
-      <label for="content">내용 : </label>
-      <textarea
-        id="content"
-        cols="30"
-        rows="10"
-        v-model="board.content"
-      ></textarea>
-      <button @click="updateBoard">수정</button>
-    </fieldset>
-  </div> -->
 </template>
 
 <script>
-
+import axios from 'axios';
 
 export default {
   name: 'ArticleUpdate',
+  data() {
+    return {
+      image: null,
+      content: '',
+    };
+  },
   computed: {
-    
+    isAvailable() {
+    return this.image !== null && this.content.trim() !== '';
+    }
   },
   methods: {
     updateArticle() {
-      let updateArticle = {
-        title: this.article.title,
-        content: this.article.content,
-      };
-      this.$store.dispatch('updateArticle', updateArticle);
+      const formData = new FormData();
+      const articleNo = this.$route.params.articleNo;
+      
+      let mytoken = localStorage.getItem("access-token");
+     
+      formData.append('content', this.content);
+      formData.append("file", this.image);
+
+      axios({
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "access-token":mytoken,
+          },
+          method: 'put',
+          url: `http://localhost:9999/api-article/article/${articleNo}`,
+          data: formData
+      }).then((response) => {
+          if (response.data === "Update Complete!") {
+            this.moveList();
+            alert('게시글 수정이 완료되었습니다!');
+          } else {
+            alert(response.data);
+          }
+        });
+    },
+    moveList() {
+      this.$router.push("/article-detail");
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.v-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.content-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.content-input {
+  width: 100%;
+  height: 200px;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: transparent;
+  padding: 8px;
+  margin: 0;
+  line-height: 1.5;
+}
+/* .content-field{
+  height: 200px;
+} */
+</style>

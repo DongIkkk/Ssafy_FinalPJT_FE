@@ -22,7 +22,6 @@
 </template>
 
 
-
 <script>
 import axios from "axios";
 
@@ -65,7 +64,7 @@ export default {
         });
     },
     moveList() {
-      this.$router.push("/article-detail");
+      this.$router.push("/article");
     },
   },
 };
