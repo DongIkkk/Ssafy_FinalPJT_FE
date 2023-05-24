@@ -9,7 +9,7 @@
             <v-form @submit.prevent="updateArticle">
               <v-file-input label="사진" v-model="image" optional></v-file-input>
               <v-text-field v-model="content" label="내용"></v-text-field>
-              <v-btn color="primary" :disabled="!isAvailable" type="submit">게시글 수정</v-btn>
+              <v-btn color="primary" type="submit">게시글 수정</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -38,12 +38,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+
 
 export default {
   name: 'ArticleUpdate',
   computed: {
-    ...mapState(['board']),
+    
   },
   methods: {
     updateArticle() {

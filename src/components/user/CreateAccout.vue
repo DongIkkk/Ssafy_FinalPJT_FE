@@ -113,7 +113,7 @@ export default {
           },
           }).then((response) => {
           if (response.data === 1) {
-            alert("회원가입이 완료되었습니다! 로그인 해주세요")
+            alert("나의 루틴 등록을 진행해주세요")
             this.moveList();
           } else {
             alert(response.data);
@@ -121,7 +121,7 @@ export default {
         });
     },
     moveList() {
-      this.$router.push("/sign-in");
+      this.$router.push("/sign-up/routine");
     },
     checkPasswordMatch() {
       if (this.password !== '' && this.confirmPassword !== '' && this.password !== this.confirmPassword) {

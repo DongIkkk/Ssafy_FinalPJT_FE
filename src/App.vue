@@ -21,12 +21,14 @@
 
       <v-spacer></v-spacer>
 
-      <span class="mr-2" style="font-size: 30px;">{{user.userName}} 님 환영합니다.</span>
+      <span class="mr-2" style="font-size: 30px;">{{user.userName}}님 환영합니다.</span>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-avatar v-on="on" size="40">
+          <v-avatar v-on="on" size="40" :class="{ 'profile-glow': isHover }"
+            @mouseenter="isHover = true"
+            @mouseleave="isHover = false" >
             <template v-if="user.profileImgName">
-              <img :src="getProfileImagePath(user.profileImgName)" alt="">
+              <img :src="getProfileImagePath(user.profileImgName)" alt="" style="cursor: pointer">
             </template>
           </v-avatar>
         </template>
@@ -57,13 +59,15 @@ export default {
   data() {
     return {
       user:{
-        profileImgName: null,
+        userName:'손',
+        profileImgName: 'profile_default_test.png',
       },
       userMenuItems: [
         { title: '회원가입', route: '/sign-up' },
         { title: '로그인', route: '/sign-in' },
         { title: '로그아웃', route: '/logout' },
       ],
+      isHover: false,
     };
   },
   methods: {
@@ -76,8 +80,8 @@ export default {
     navigateTo(route) {
       if (route === '/logout') {
         localStorage.removeItem('access-token');
-        // 로그아웃 후 리다이렉트 등 필요한 작업 수행
-        this.$router.push('');
+        this.user.userName = '손';
+        this.$router.push('sign-in');
       } else {
         this.$router.push(route);
       }
@@ -98,3 +102,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.profile-glow {
+  box-shadow: 0 0 10px yellow;
+  transition: box-shadow 0.3s ease;
+  
+}
+</style>
