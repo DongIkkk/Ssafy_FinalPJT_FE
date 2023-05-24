@@ -8,11 +8,21 @@
             <v-form @submit.prevent="signup">
               <v-text-field v-model="userId" label="아이디" ref="userId"></v-text-field>
               <v-btn color="primary" @click="checkDuplicate">중복 확인</v-btn>
-              <v-text-field v-model="password" label="비밀번호" type="password"></v-text-field>
+              <v-text-field v-model="password" label="비밀번호" type="password" @input="checkPasswordMatch"></v-text-field>
+              <v-text-field v-model="confirmPassword" label="비밀번호 확인" type="password" @input="checkPasswordMatch"></v-text-field>
+              <v-card-actions>
+                <span v-if="password !== '' && confirmPassword !== '' && password !== confirmPassword" class="error-text">비밀번호가 일치하지 않습니다.</span>
+                <span v-else-if="password !== '' && confirmPassword !== '' && password === confirmPassword" class="success-text">비밀번호가 일치합니다.</span>
+              </v-card-actions>
               <v-text-field v-model="userName" label="유저네임"></v-text-field>
-              <v-text-field v-model="email" label="이메일"></v-text-field>
-              <v-text-field v-model="gender" label="성별"></v-text-field>
-              <v-text-field v-model="age" label="나이"></v-text-field>
+              <v-text-field
+                v-model="email"
+                label="이메일"
+                :rules="[emailValidationRule]"
+                :error-messages="getEmailErrors"
+              ></v-text-field>
+              <v-select v-model="gender" :items="['M', 'W']" label="성별"></v-select>
+              <v-text-field v-model.number="age" label="나이" type="number"></v-text-field>
               <v-file-input label="프로필 사진" v-model="profileImage" optional></v-file-input>
               <v-btn color="primary" :disabled="!isAvailable" type="submit">회원가입</v-btn>
             </v-form>
@@ -28,6 +38,7 @@ import axios from "axios";
 
 export default {
   name: "Signup",
+  
   data() {
     return {
       userId: "",
@@ -39,6 +50,14 @@ export default {
       profileImage: null,
       isAvailable: false,
     };
+  },
+  computed: {
+    getEmailErrors() {
+        if (this.email && !/.+@.+\..+/.test(this.email)) {
+        return ['올바른 이메일 형식이 아닙니다.'];
+      }
+      return [];
+    },
   },
   methods: {
     checkDuplicate() {
@@ -70,6 +89,11 @@ export default {
 
     signup() {
       const formData = new FormData();
+      if (this.password !== this.confirmPassword) {
+        // 비밀번호가 일치하지 않으면 처리 로직 추가
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
       formData.append('userId', this.userId);
       formData.append('password', this.password);
       formData.append('userName', this.userName);
@@ -89,6 +113,7 @@ export default {
           },
           }).then((response) => {
           if (response.data === 1) {
+            alert("회원가입이 완료되었습니다! 로그인 해주세요")
             this.moveList();
           } else {
             alert(response.data);
@@ -97,6 +122,13 @@ export default {
     },
     moveList() {
       this.$router.push("/sign-in");
+    },
+    checkPasswordMatch() {
+      if (this.password !== '' && this.confirmPassword !== '' && this.password !== this.confirmPassword) {
+        this.isAvailable = false;
+      } else {
+        this.isAvailable = true;
+      }
     },
   },
 };
@@ -108,5 +140,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.password-match-text {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.error-text {
+  color: red;
+}
+
+.success-text {
+  color: green;
 }
 </style>

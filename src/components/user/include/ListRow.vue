@@ -4,7 +4,9 @@
     <td>{{userId}}</td>
     <td>{{ userName }}</td>
     <td>{{ gender }}</td>
-    <td>{{ age }}</td>
+    <td>
+      <img :src="getProfileImagePath(profileImgName)" alt="프로필 이미지">
+    </td>
   </tr>
 </template>
 
@@ -17,10 +19,14 @@ export default {
     userId: String,
     userName: String,
     gender: String,
-    age: Number
+    age: Number,
+    profileImgName:String,
   },
   methods: {
-  }
+    getProfileImagePath(fileName) {
+      return require(`@/assets/profile_img/${fileName}`);
+    },
+  },
 };
 </script>
 <style scope>

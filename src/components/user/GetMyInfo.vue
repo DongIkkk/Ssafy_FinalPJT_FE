@@ -28,6 +28,7 @@
             :userName="user.userName"
             :gender="user.gender"
             :age="user.age"
+            :profileImgFullpath="user.profileImgFullpath"
           />
         </tbody>
       </table>

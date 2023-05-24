@@ -12,7 +12,6 @@
       <v-row>
         <v-col>
           <v-main style="min-height: 700px; color:white;">
-            두 번째 메인 구역
             <youtube-component/>
           </v-main>
         </v-col>
