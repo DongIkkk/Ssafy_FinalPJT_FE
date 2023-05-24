@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="" height="115" dark>
+    <v-app-bar app color="black" height="115" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Name" class="shrink mt-1 hidden-sm-and-down ml-2" contain min-width="200"
@@ -8,7 +8,9 @@
           @click="navigateToMainPage"          
         />
       </div>
-
+      <v-btn text v-for="item in MenuItems" :key="item.title" @click="navigateTo(item.route)" class="menu-item">
+          {{ item.title }}
+        </v-btn>
       <v-spacer></v-spacer>
 
       <span class="mr-2" style="font-size: 30px;">{{ loggedInUser.userName }}님 환영합니다.</span>
@@ -51,6 +53,13 @@ export default {
 
   data() {
     return {
+      MenuItems: [
+        // 여기 수정해야돼!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        { title: '마이페이지', route: '/profile' },
+        { title: '오운완', route: '/article' },
+        { title: 'People', route: '/logout' },
+        { title: '기타', route: '/logout' },
+      ],
       // 메뉴 드롭다운을 위한 라우트값과 아이템
       userMenuItems: [
         { title: '회원가입', route: '/sign-up' },
@@ -95,6 +104,13 @@ export default {
 .profile-glow {
   box-shadow: 0 0 10px yellow;
   transition: box-shadow 0.3s ease;
-  
+}
+.menu-item {
+  font-size: 20px;
+  margin-left: 20px;
+}
+.menu-item:hover {
+  box-shadow: 0 0 10px yellow;
+  transition: box-shadow 0.3s ease;
 }
 </style>

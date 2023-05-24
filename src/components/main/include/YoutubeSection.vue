@@ -51,7 +51,7 @@ import axios from "axios";
 export default {
   name: 'YoutubeComponent',
   computed: {
-    ...mapState(['videos', 'selectedVideo']),
+    ...mapState(['videos', 'selectedVideo', 'loggedIn']),
     videoURL() {
       const videoId = this.selectedVideo.id.videoId;
       return `https://www.youtube.com/embed/${videoId}`;
@@ -59,12 +59,16 @@ export default {
   },
   data() {
     return {
-      keyword: '',
-      todayroutine:'',
+      keyword: '오늘의 운동',
+      todayroutine: '',
     };
   },
   created(){
-    this.getTodayRoutine();
+    if (this.loggedIn) {
+      this.getTodayRoutine();
+  } else {
+    this.search();
+  }
   },
   methods: {
     getTodayRoutine(){

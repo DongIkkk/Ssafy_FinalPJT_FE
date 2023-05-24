@@ -2,20 +2,19 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
-        <div class="text-center">이곳은 로그인 페이지입니다.</div>
+        <div class="login-container">
+          <h2 class="login-header">로그인</h2>
 
-        <v-form class="mt-4">
-          <v-text-field v-model="userId" label="아이디" outlined></v-text-field>
-          <v-text-field v-model="password" label="비밀번호" outlined type="password"></v-text-field>
+          <v-form class="login-form mt-4">
+            <v-text-field v-model="userId" label="아이디" outlined dense></v-text-field>
+            <v-text-field v-model="password" label="비밀번호" outlined dense type="password"></v-text-field>
 
-          <v-row justify="center">
-            <v-btn class="mr-2" color="primary" @click="signin">로그인</v-btn>
-            <router-link to="/sign-up">
-              <span class="mr-2" style="color:red">회원가입</span>
-              <v-icon>mdi-open-in-new</v-icon>
-            </router-link>
-          </v-row>
-        </v-form>
+            <v-row justify="center">
+              <v-btn class="login-button mr-2" color="primary" @click="signin">로그인</v-btn>
+              <v-btn class="signup-button" color="primary" text @click="moveSignup">회원가입</v-btn>
+            </v-row>
+          </v-form>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -61,10 +60,8 @@ export default {
         responseType: 'json',
       }).then((response) => {
         const user = response.data;
-        alert(user)
         // Vuex의 login 액션을 호출하여 유저 정보를 저장
         this.login(user);
-        
         // 로그인 후 페이지 이동
         this.moveList();
       }).catch((error) => {
@@ -75,21 +72,37 @@ export default {
     moveList() {
       this.$router.push("/");
     },
+    moveSignup() {
+      this.$router.push("/sign-up");
+    },
   },
 };
 </script>
 
-
 <style scoped>
-.text-center {
+.login-container {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.login-header {
   text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-.mt-4 {
-  margin-top: 4rem;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.mr-2 {
-  margin-right: 2rem;
+.login-button {
+  margin-right: 10px;
+}
+
+.signup-button {
+  text-transform: none;
 }
 </style>

@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     getFormattedItems(items) {
-      return items.join(' ');
+      return items.join('');
     },
     updateAvailability() {
       if (this.routineType === "2") {
@@ -95,8 +95,8 @@ export default {
     },
     createRoutine(){
       const formData = new FormData();
-      let mytoken = localStorage.getItem("access-token")
-
+      let myId = localStorage.getItem("myId")
+      formData.append('myId', myId);
       formData.append('routineType', this.routineType);
       formData.append('dayOne', this.dayOneItems);
       formData.append('dayTwo', this.dayTwoItems);
@@ -115,7 +115,6 @@ export default {
         .post("http://localhost:9999/api-routine/routine", formData, 
           { headers: {
             "Content-Type": "multipart/form-data",
-            "access-token":mytoken,
           },
           }).then((response) => {
             console.log(response);

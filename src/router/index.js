@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'
 import UsersView from '../views/UsersView.vue'
 import ArticleView from '../views/ArticleView.vue'
+import FollowView from '../views/FollowView.vue'
 
 import ArticleCreate from '../components/article/ArticleCreate.vue'
 import ArticleUpdate from '../components/article/ArticleUpdate.vue'
@@ -20,6 +22,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
   {
     path: '/sign-in',
@@ -40,6 +47,11 @@ const routes = [
     path: "/articles/:userNo",
     name: "getMyArticle",
     component: GetMyArticle,
+  },
+  {
+    path: "/follow",
+    name: "follow",
+    component: FollowView,
   },
   {
     path: "/sign-up/routine",

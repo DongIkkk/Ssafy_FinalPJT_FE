@@ -5,8 +5,19 @@
         <v-card>
           <v-card-title>게시글 상세보기</v-card-title>
           <v-img :src="getImagePath(article.imgName)" class="article-photo"></v-img>
-          <v-card-text>{{ article.content }}</v-card-text>
-          <v-card-actions>
+          <v-card-text>
+            <div class="article-details">
+              <div class="article-date">{{ formatDate(article.createdAt) }}</div>
+              <div class="article-like-views">
+                <span class="like-count">좋아요: {{ article.likeCnt }}</span>
+                <span class="view-count">조회수: {{ article.viewCnt }}</span>
+              </div>
+            </div>
+            {{ article.content }}
+          </v-card-text>
+          <v-card-actions class="article-actions">
+            <v-btn color="primary" @click="moveList">목록으로 돌아가기</v-btn>
+            <v-spacer></v-spacer>
             <v-btn color="primary" @click="moveUpdate">수정</v-btn>
             <v-btn color="error" @click="deleteArticle">삭제</v-btn>
           </v-card-actions>
@@ -47,6 +58,10 @@ export default {
     getImagePath(fileName) {
       return require(`@/assets/${fileName}`);
     },
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    },
     deleteArticle() {
       let mytoken = localStorage.getItem("access-token");
 
@@ -63,7 +78,7 @@ export default {
         // 삭제 후 필요한 동작 수행
       });
     },
-      moveList() {
+    moveList() {
       this.$router.push("/article");
     },
   },
@@ -72,6 +87,35 @@ export default {
 
 <style>
 .article-photo {
-  width: 100%;
+  width: 300px;
   height: auto;
-}</style>
+  margin-bottom: 10px;
+}
+
+.article-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.article-date {
+  font-size: 14px;
+  color: #888;
+}
+
+.article-like-views {
+  display: flex;
+}
+
+.like-count {
+  margin-right: 10px;
+}
+
+.view-count {
+  margin-right: 10px;
+}
+
+.article-actions {
+  justify-content: space-between;
+}
+</style>

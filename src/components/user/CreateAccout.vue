@@ -114,6 +114,7 @@ export default {
           }).then((response) => {
           if (response.data === 1) {
             alert("나의 루틴 등록을 진행해주세요")
+            localStorage.setItem("myId", this.userId);
             this.moveList();
           } else {
             alert(response.data);
