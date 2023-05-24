@@ -11,6 +11,7 @@ import ArticleUpdate from '../components/article/ArticleUpdate.vue'
 import ArticleList from '../components/article/ArticleList.vue'
 import ArticleDetail from '../components/article/ArticleDetail.vue'
 import GetMyArticle from '../components/article/GetMyArticle.vue'
+import CreateRoutine from '../components/user/CreateRoutine.vue'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,12 @@ const routes = [
     name: "getMyArticle",
     component: GetMyArticle,
   },
+  {
+    path: "/sign-up/routine",
+    name: "createRoutine",
+    component: CreateRoutine,
+  },
+
   {
     path: "/article",
     component: ArticleView,
