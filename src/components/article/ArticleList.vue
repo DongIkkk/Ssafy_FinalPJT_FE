@@ -2,7 +2,7 @@
   <div class="article-list">
     <div v-for="article in articles" :key="article.id" class="article-card" @click="goToArticleDetail(article.articleNo)">
       <div class="article-photo-container">
-        <img :src="getProfileImagePath(article.imgName)" alt="Article Photo" class="article-photo" />
+        <img :src="getImagePath(article.imgName)" alt="Article Photo" class="article-photo" />
       </div>
       <div class="article-content-container">
         <div class="article-content">{{ article.content }}</div>
@@ -35,7 +35,7 @@ export default {
     });
   },
   methods:{
-    getProfileImagePath(fileName) {
+    getImagePath(fileName) {
       return require(`@/assets/${fileName}`);
     },
     goToArticleDetail(articleNo) {
@@ -62,6 +62,7 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  cursor: pointer;
 }
 
 .article-photo-container {

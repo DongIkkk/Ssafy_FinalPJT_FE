@@ -10,6 +10,7 @@ import ArticleCreate from '../components/article/ArticleCreate.vue'
 import ArticleUpdate from '../components/article/ArticleUpdate.vue'
 import ArticleList from '../components/article/ArticleList.vue'
 import ArticleDetail from '../components/article/ArticleDetail.vue'
+import GetMyArticle from '../components/article/GetMyArticle.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
     component: UsersView
   },
   {
+    path: "/articles/:userNo",
+    name: "getMyArticle",
+    component: GetMyArticle,
+  },
+  {
     path: "/article",
     component: ArticleView,
     children: [
@@ -57,7 +63,7 @@ const routes = [
         path: ":articleNo/update",
         name: "articleUpdate",
         component: ArticleUpdate,
-      },
+      },  
     ],
   },
 ]
