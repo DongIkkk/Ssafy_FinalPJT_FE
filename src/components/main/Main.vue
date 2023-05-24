@@ -20,6 +20,7 @@
         <v-col>
           <v-main style="min-height: 700px; color:white;">
             세 번째 메인 구역
+            <article-component/>
           </v-main>
         </v-col>
       </v-row>
@@ -30,13 +31,14 @@
 <script>
 import specialComponent from "./include/SpecialSection.vue";
 import YoutubeComponent from './include/YoutubeSection.vue';
-
+import ArticleComponent from './include/ArticleSection.vue';
 
 export default {
   name: "Main",
   components:{
     specialComponent,
-    YoutubeComponent
+    YoutubeComponent,
+    ArticleComponent,
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
