@@ -1,7 +1,12 @@
 <template>
-  <div class="grass-field">
-    <div v-for="(week, weekIndex) in recentWeeks" :key="weekIndex" class="grass-week">
-      <div v-for="(day, dayIndex) in week" :key="dayIndex" class="grass-day" :class="{ 'colored': !isColored(day) }"></div>
+  <div>
+    <img src="@/assets/yourggggparents.png" alt="묘" class="grass-image" />
+    <div class="grass-field">
+      <div v-for="(week, weekIndex) in recentWeeks" :key="weekIndex" class="grass-week">
+        <div v-for="(day, dayIndex) in week" :key="dayIndex" class="grass-day" :class="{ 'colored': !isColored(day) }"></div>
+      </div>
+      <h2>오늘의 운동을 인증하고 잔디를 깎아보세요!</h2>
+      <button class="grass-button">오늘은 휴식</button>
     </div>
   </div>
 </template>
@@ -28,9 +33,6 @@ export default {
       const today = new Date();
 
       const weeks = [];
-
-      
-        
 
         for (let row = 0; row < this.rows; row++) {
           const week = [];
@@ -75,8 +77,16 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  width: 350px; /* 고정된 너비 설정 */
-  height: 98px; /* 고정된 높이 설정 */
+  width: 465px; /* 고정된 너비 설정 */
+  height: 160px; /* 고정된 높이 설정 */
+  border: 1px solid #d7d7d7; /* 회색 테두리 추가 */
+  border-radius: 10px; /* 모서리를 둥글게 만듦 */
+}
+
+
+.grass-image {
+  width: 150px !important;
+  height: 100px !important;
 }
 
 .grass-week {
@@ -94,5 +104,19 @@ export default {
 .colored {
   background-color: green;
   box-shadow: 0 0  #FFFF00;
+}
+
+.grass-button {
+  background-color: green;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.grass-button:hover {
+  background-color: darkgreen;
 }
 </style>

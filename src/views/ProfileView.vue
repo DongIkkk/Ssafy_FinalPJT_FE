@@ -5,12 +5,13 @@
     </div>
     <div class="content-section">
       <div class="grass-section">
-          <img src="../assets/yourggggparents.png" alt="묘" class="grass-image" />
+        <h2>운동완료 조상님 묘 잔디깎기</h2>
         <grass-field />
       </div>
       <div class="article-section">
         <div class="article">
-          여기는 게시글 목록입니다.
+          <h2>나의 게시글</h2>
+          <my-articles />
         </div>
       </div>
     </div>
@@ -20,6 +21,7 @@
 <script>
 import MyProfile from '../components/profile/myProfile.vue'
 import GrassField from '../components/profile/grassField.vue'
+import MyArticles from '../components/profile/myArticles.vue'
 
 export default {
     name: 'Profile',
@@ -27,6 +29,7 @@ export default {
     components: {
       MyProfile,
       GrassField,
+      MyArticles,
     },
 }
 </script>
@@ -41,13 +44,13 @@ export default {
 
 .content-section {
   display: flex;
-  width: 60%;
+  width: 50%;
   flex-direction: column;
 }
 
 .grass-section {
   flex: 1;
-  margin-bottom: 200px;
+  margin-bottom: 100px;
   margin-left: 10%;
   margin-top: 5%;
 }
@@ -66,8 +69,5 @@ export default {
   height: 100%;
   padding: 10px;
 }
-.grass-image {
-  width: 80%;
-  height: auto;
-}
+
 </style>
