@@ -13,7 +13,7 @@
         </v-btn>
       <v-spacer></v-spacer>
 
-      <span class="mr-2" style="font-size: 30px;">{{ loggedInUser.userNo }}{{ loggedInUser.userName }}님 환영합니다.</span>
+      <span class="mr-2" style="font-size: 30px;">{{ loggedInUser.userName }}님 환영합니다.</span>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-avatar v-on="on" size="40" :class="{ 'profile-glow': isHover }"

@@ -18,10 +18,12 @@
       <div class="article-photo-container" @click="goToArticleDetail(article.articleNo)">
         <img :src="getImagePath(article.imgName)" alt="Article Photo" class="article-photo" />
       </div>
-      <button class="like-button" @click="toggleLike(article.articleNo)">
-      <span v-if="isLiked(article.articleNo)">좋아요 취소</span>
-      <span v-else>좋아요</span>
-    </button>
+      <button class="like-button gradient" @click="toggleLike(article.articleNo)">
+        <span v-if="isLiked(article.articleNo)">좋아요 취소</span>
+        <span v-else>좋아요</span>
+      </button>
+
+
       <div class="article-content-container">
         <div class="article-content">{{ article.content }}</div>
       </div>
@@ -79,6 +81,20 @@ export default {
       .catch((error) => {
         console.error(error);
       });
+
+      axios({
+      headers: { "access-token": mytoken },
+      method: "get",
+      url: `http://localhost:9999/api-article/like/articles`,
+      responseType: "json",
+    })
+      .then((response) => {
+        console.log(response.data);
+        this.liketable = response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
       
   },
   methods: {
@@ -109,7 +125,7 @@ export default {
       }
     },
     isLiked(articleNo) {
-      return this.liketable.some((like) => like.articleNo === articleNo);
+      return this.liketable.includes(articleNo);
     },
 
     likeArticle(articleNo) {
@@ -259,15 +275,18 @@ display: flex;
 align-items: center;
 
 }
-
- .like-button {
+.like-button.gradient {
   border: none;
-  background: none;
+  background: linear-gradient(45deg, #ff4081, #f50057);
   cursor: pointer;
-  color: #777777;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background 0.3s;
 }
 
-.like-button:hover {
-  text-decoration: underline;
+.like-button.gradient:hover {
+  background: linear-gradient(45deg, #f50057, #ff4081);
 }
+
 </style>

@@ -21,13 +21,25 @@
           <v-card-actions class="article-actions">
             <v-btn color="primary" @click="moveList">목록으로 돌아가기</v-btn>
             <v-spacer></v-spacer>
+            <v-btn icon color="primary" @click="openCommentForm" style="margin-right:10px">
+              댓글작성
+              <v-icon>mdi-comment-plus</v-icon>
+            </v-btn>
             <v-btn v-if="isAuthor" icon color="primary" @click="moveUpdate">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn v-if="isAuthor" icon color="error" @click="deleteArticle">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
+            
           </v-card-actions>
+          <div class="comment-form" v-if="showCommentForm">
+            <v-textarea v-model="editCommentText"></v-textarea>
+            <div>
+              <v-btn color="primary" @click="saveComment">저장</v-btn>
+              <v-btn color="error" @click="cancelComment">취소</v-btn>
+            </div>
+          </div>
         </v-card>
         <div class="comments-section">
           <ul class="comments-list">
@@ -104,6 +116,7 @@ export default {
       editCommentDialog: false,
       editedComment: '',
       editingComment: null,
+      showCommentForm: false,
     };
   },
   computed: {
@@ -168,6 +181,45 @@ export default {
         alert('게시글 삭제가 완료되었습니다!');
         this.moveList();
       });
+    },
+    openCommentForm() {
+      this.editCommentText = ''; // 댓글 입력 필드 초기화
+      this.showCommentForm = true; // 댓글 작성 폼 표시
+    },
+    saveComment() {
+      // 새로운 댓글 생성 및 서버에 저장
+      const newComment = {
+        content: this.editCommentText,
+      };
+
+      let mytoken = localStorage.getItem("access-token");
+      const articleNo = this.$route.params.articleNo;
+        axios({
+          headers: { "access-token": mytoken },
+          method: "post",
+          url: `http://localhost:9999/api-comment/${articleNo}/comment`,
+          data : newComment,
+          responseType: "json",
+        })
+          .then((response) => {
+            console.log(response.data);
+            this.editCommentText = "";
+            this.showCommentForm = false;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+      // 새로운 댓글을 목록에 추가
+      this.comments.push(newComment);
+
+      // 댓글 작성 폼 닫기
+      this.showCommentForm = false;
+    },
+    cancelComment() {
+      // 댓글 작성 취소 시, 입력 필드 초기화 및 폼 닫기
+      this.editCommentText = '';
+      this.showCommentForm = false;
     },
     moveList() {
       this.$router.push("/article");

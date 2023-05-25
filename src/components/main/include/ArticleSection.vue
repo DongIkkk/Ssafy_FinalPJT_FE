@@ -1,11 +1,28 @@
 <template>
   <div class="article-list">
-    <div v-for="article in displayedArticles" :key="article.id" class="article-card" @click="goToArticleDetail(article.articleNo)">
-      <div class="article-photo-container">
+    <div v-for="article in displayedArticles" :key="article.id" class="article-card">
+      <div class="article-info">
+        <div class="article-time">{{ formatDate(article.created_at) }}</div>
+      </div>
+      <br/>
+      <div class="article-user">
+        <img :src="getUserProfileImage(article.userNo)" alt="User Profile" class="user-profile-img" />
+        <div class="user-info">
+          <div class="user-name">{{ getUserInfo(article.userNo, 'userName') }}&nbsp;</div>
+        </div> 
+        <div class="user-info">
+          <div class="user-id">{{ getUserInfo(article.userNo, 'userId') }}</div>
+        </div>
+      </div>
+      <div class="article-photo-container" @click="goToArticleDetail(article.articleNo)">
         <img :src="getImagePath(article.imgName)" alt="Article Photo" class="article-photo" />
       </div>
       <div class="article-content-container">
         <div class="article-content">{{ article.content }}</div>
+      </div>
+        <div class="article-views">
+        <span class="view-icon"></span>
+          조회수 : {{ article.viewCnt }}
       </div>
     </div>
   </div>
@@ -19,6 +36,7 @@ export default {
   data() {
     return {
       articles: [],
+      users: [],
     };
   },
   created() {
@@ -33,24 +51,56 @@ export default {
       console.log(response.data);
       this.articles = response.data
     });
+
+    axios({
+      headers: { "access-token": mytoken },
+      method: "get",
+      url: `http://localhost:9999/api-user/users`,
+      responseType: "json",
+    })
+      .then((response) => {
+        console.log(response.data);
+        this.users = response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
+
   computed: {
     displayedArticles() {
       return this.articles.slice(0, 8);
     },
   },
+
   methods:{
     getImagePath(fileName) {
       return require(`@/assets/${fileName}`);
     },
+    getUserProfileImage(userNo) {
+      const user = this.users.find((user) => user.userNo === userNo);
+      return require(`@/assets/profile_img/${user.profileImgName}`);
+    },
+    getUserInfo(userNo, field) {
+      const user = this.users.find((user) => user.userNo === userNo);
+      return user ? user[field] : "";
+    },
     goToArticleDetail(articleNo) {
       this.$router.push({ path: `/article/${articleNo}` });
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleString();
     },
   }
 };
 </script>
 
 <style scoped>
+*{
+  color:black;
+}
+
 .article-list {
   display: flex;
   flex-wrap: wrap;
@@ -97,5 +147,65 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.article-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article-views{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #777777;
+}
+.article-time {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #777777;
+}
+
+.article-user {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+  margin-top:-10px;
+}
+
+.user-profile-img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-id {
+  color: #777777;
+}
+
+.article-bottom{
+display: flex;
+align-items: center;
+
 }
 </style>
