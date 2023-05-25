@@ -5,7 +5,7 @@
 <v-container>
     <v-row class="flex">
       <v-col cols="12" class="mt-2">
-        <h3>오늘의 루틴 영상 "{{ todayroutine }}"</h3>
+        <h1>오늘의 루틴 영상 "{{ todayroutine }}"</h1>
       </v-col>
 
       <div class="youtube-list">

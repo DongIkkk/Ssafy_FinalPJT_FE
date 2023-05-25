@@ -18,6 +18,10 @@
       <div class="article-photo-container" @click="goToArticleDetail(article.articleNo)">
         <img :src="getImagePath(article.imgName)" alt="Article Photo" class="article-photo" />
       </div>
+      <button class="like-button" @click="toggleLike(article.articleNo)">
+      <span v-if="isLiked(article.articleNo)">좋아요 취소</span>
+      <span v-else>좋아요</span>
+    </button>
       <div class="article-content-container">
         <div class="article-content">{{ article.content }}</div>
       </div>
@@ -42,6 +46,7 @@ export default {
       articles: [],
       users: [],
       liketable: [],
+      comments: [],
     };
   },
   created() {
@@ -74,20 +79,7 @@ export default {
       .catch((error) => {
         console.error(error);
       });
-
-    axios({
-      headers: { "access-token": mytoken },
-      method: "get",
-      url: `http://localhost:9999/api-article/like/articles`,
-      responseType: "json",
-    })
-      .then((response) => {
-        console.log(response.data);
-        this.liketable = response.data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      
   },
   methods: {
     getImagePath(fileName) {
@@ -107,6 +99,50 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleString();
+    },
+    toggleLike(articleNo) {
+      // 해당 게시글의 좋아요 상태를 확인하여 토글
+      if (this.isLiked(articleNo)) {
+        this.unlikeArticle(articleNo);
+      } else {
+        this.likeArticle(articleNo);
+      }
+    },
+    isLiked(articleNo) {
+      return this.liketable.some((like) => like.articleNo === articleNo);
+    },
+
+    likeArticle(articleNo) {
+      let mytoken = localStorage.getItem("access-token");
+      axios({
+        method: "post",
+        url: `http://localhost:9999/api-article/like/${articleNo}`,
+        headers: { "access-token": mytoken },
+      })
+        .then((response) => {
+          console.log(response.data);
+          console.log("좋아요가 추가되었습니다.");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    
+    // 좋아요 취소 메소드
+    unlikeArticle(articleNo) {
+      let mytoken = localStorage.getItem("access-token");
+      axios({
+        method: "delete",
+        url: `http://localhost:9999/api-article/like/${articleNo}`,
+        headers: { "access-token": mytoken },
+      })
+        .then((response) => {
+          console.log(response.data);
+          console.log("좋아요가 취소되었습니다.");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };
@@ -188,12 +224,6 @@ export default {
   color: #777777;
 }
 
-.view-icon {
-  width: 16px;
-  height: 16px;
-  /* 아이콘 스타일링 */
-}
-
 .article-user {
   display: flex;
   align-items: center;
@@ -228,5 +258,16 @@ export default {
 display: flex;
 align-items: center;
 
+}
+
+ .like-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #777777;
+}
+
+.like-button:hover {
+  text-decoration: underline;
 }
 </style>

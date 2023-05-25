@@ -4,7 +4,6 @@
       <v-row>
         <v-col>
           <v-main style="min-height: 700px; color:white;">
-            첫 번째 메인 구역
             <special-component />
           </v-main>
         </v-col>
@@ -19,7 +18,7 @@
       <v-row>
         <v-col>
           <v-main style="min-height: 700px; color:white;">
-            세 번째 메인 구역
+            <h1>오늘의 운동 인증글</h1>
             <article-component/>
           </v-main>
         </v-col>

@@ -57,8 +57,8 @@ export default {
         // 여기 수정해야돼!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         { title: '마이페이지', route: '/profile' },
         { title: '오운완', route: '/article' },
-        { title: 'People', route: '/follow' },
-        { title: '기타', route: '/logout' },
+        { title: '친구찾기', route: '/follow' },
+        { title: '운동 인증하기', route: '/article/create' },
       ],
       // 메뉴 드롭다운을 위한 라우트값과 아이템
       userMenuItems: [
