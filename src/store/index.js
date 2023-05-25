@@ -8,11 +8,15 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     loginUser: {
+      userNo:0,
       userName:'손',
       profileImgName: 'profile_default_test.png',
     },
     videos: [],
     video: null,
+    users: [],
+    follower: [],
+    following: [],
   },
   getters: {
   },
@@ -30,6 +34,15 @@ export default new Vuex.Store({
     },
     CLICK_VIDEO(state, video){
       state.video = video
+    },
+    SET_USERS(state, users) {
+      state.users = users;
+    },
+    SET_FOLLOWER(state, follower) {
+      state.follower = follower;
+    },
+    SET_FOLLOWING(state, following) {
+      state.following = following;
     },
     
   },
@@ -68,6 +81,75 @@ export default new Vuex.Store({
     //payload : 비디오 객체가 들어온다.
     clickVideo({commit}, payload){
       commit("CLICK_VIDEO", payload)
+    },
+    fetchUsers({ commit }) {
+      let mytoken = localStorage.getItem('access-token');
+
+      axios({
+        headers: { 'access-token': mytoken },
+        method: 'get',
+        url: `http://localhost:9999/api-user/users`,
+        responseType: 'json',
+      })
+        .then((response) => {
+          commit('SET_USERS', response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    fetchFollowInfo({ commit }) {
+      let mytoken = localStorage.getItem('access-token');
+
+      axios({
+        headers: { 'access-token': mytoken },
+        method: 'get',
+        url: `http://localhost:9999/api-user/follow`,
+        responseType: 'json',
+      })
+        .then((response) => {
+          commit('SET_FOLLOWER', response.data[0]);
+          commit('SET_FOLLOWING', response.data[1]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    followUser({ dispatch }, to) {
+      let mytoken = localStorage.getItem('access-token');
+
+      axios({
+        headers: { 'access-token': mytoken, 'Content-Type': 'application/json' },
+        method: 'post',
+        url: `http://localhost:9999/api-user/follow`,
+        data: to,
+        responseType: 'json',
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch('fetchFollowInfo'); // 팔로우 정보를 업데이트하기 위해 fetchFollowInfo 액션 호출
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    unfollowUser({ dispatch }, to) {
+      let mytoken = localStorage.getItem('access-token');
+
+      axios({
+        headers: { 'access-token': mytoken, 'Content-Type': 'application/json' },
+        method: 'delete',
+        url: `http://localhost:9999/api-user/follow`,
+        data: to,
+        responseType: 'json',
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch('fetchFollowInfo'); // 팔로우 정보를 업데이트하기 위해 fetchFollowInfo 액션 호출
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   modules: {

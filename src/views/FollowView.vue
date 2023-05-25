@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>팔로우뷰</h2>
     <following-page />
   </div>
 </template>

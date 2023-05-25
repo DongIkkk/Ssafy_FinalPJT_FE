@@ -13,7 +13,7 @@
         </v-btn>
       <v-spacer></v-spacer>
 
-      <span class="mr-2" style="font-size: 30px;">{{ loggedInUser.userName }}님 환영합니다.</span>
+      <span class="mr-2" style="font-size: 30px;">{{ loggedInUser.userNo }}{{ loggedInUser.userName }}님 환영합니다.</span>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-avatar v-on="on" size="40" :class="{ 'profile-glow': isHover }"
@@ -57,7 +57,7 @@ export default {
         // 여기 수정해야돼!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         { title: '마이페이지', route: '/profile' },
         { title: '오운완', route: '/article' },
-        { title: 'People', route: '/logout' },
+        { title: 'People', route: '/follow' },
         { title: '기타', route: '/logout' },
       ],
       // 메뉴 드롭다운을 위한 라우트값과 아이템

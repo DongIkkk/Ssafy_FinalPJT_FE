@@ -1,129 +1,142 @@
 <template>
-  <div>
+  <div class ="list-box">
     <div class="user-list">
-      <div v-for="user in users" :key="user.id" class="user-card">
+      <v-card v-for="user in filteredUsers" :key="user.id" class="user-card">
         <div class="user-info">
-          <div class="profile-image">
-            <img :src="getProfileImagePath(user.profileImgName)" alt="Profile Image">
-          </div>
+          <v-img class="profile-image" :src="getProfileImagePath(user.profileImgName)" alt="Profile Image"></v-img>
           <div class="user-details">
-            <span class="username">{{ user.username }}</span>
-            <div class="user-stats">
-              <span class="age">Age: {{ user.age }}</span>
-              <span class="followers">Followers: {{ user.followers }}</span>
-              <span class="following">Following: {{ user.following }}</span>
+            <div class="user-header">
+              <span class="username">{{ user.userName }}</span>
             </div>
+            <span class="follow-status" v-if="isFollower(user.userNo) && !isFollowing(user.userNo)">팔로워</span>
+            <span class="follow-status follow-back" v-if="isFollowing(user.userNo) && isFollower(user.userNo)">맞팔</span>
             <div class="follow-button-container">
-              <button v-if="isFollowing" class="unfollow-button" @click="unfollowUser">언팔로우</button>
-              <button v-else class="follow-button" @click="followUser">팔로우</button>
+              <v-btn v-if="isFollowing(user.userNo)" class="unfollow-button" color="grey" dark @click="unfollowUser(user.userNo)">언팔로우</v-btn>
+              <v-btn v-else class="follow-button" color="primary" dark @click="followUser(user.userNo)">팔로우</v-btn>
             </div>
           </div>
         </div>
-      </div>
+      </v-card>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Following',
-  data() {
-    return {
-      users: [],
-      isFollowing: false, // 팔로우 여부를 저장하는 변수
-    };
+  computed: {
+    ...mapState(['users', 'follower', 'following', 'loginUser']),
+    filteredUsers() {
+    const currentUserNo = this.loginUser.userNo; // 현재 사용자의 userNo를 얻는 방법에 따라 구현해야 합니다.
+    return this.users.filter(user => user.userNo !== currentUserNo);
+  },
   },
   created() {
-    let mytoken = localStorage.getItem('access-token');
+    this.fetchUsers();
 
-    axios({
-      headers: { 'access-token': mytoken },
-      method: 'get',
-      url: `http://localhost:9999/api-user/users`,
-      responseType: 'json',
-    }).then((response) => {
-      console.log(response.data);
-      this.users = response.data;
-    });
+    this.fetchFollowInfo();
   },
   methods: {
+    ...mapActions(['fetchUsers', 'fetchFollowInfo', 'followUser', 'unfollowUser']),
     getProfileImagePath(fileName) {
       return require(`@/assets/profile_img/${fileName}`);
     },
-    followUser() {
-      // 팔로우 기능 구현
-      // 서버로 팔로우 요청을 보내고, 성공하면 isFollowing 값을 true로 변경
-      this.isFollowing = true;
+    isFollower(userNo) {
+      return this.follower.includes(userNo);
     },
-    unfollowUser() {
-      // 언팔로우 기능 구현
-      // 서버로 언팔로우 요청을 보내고, 성공하면 isFollowing 값을 false로 변경
-      this.isFollowing = false;
+    isFollowing(userNo) {
+      return this.following.includes(userNo);
     },
   },
 };
 </script>
 
 <style>
+.list-box{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .user-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  width:700px;
 }
 
 .user-card {
-  margin: 10px;
   width: 200px;
-  border: 1px solid #ccc;
   border-radius: 5px;
+  margin: 10px;
   padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  flex: 0 0 calc(33.33% - 20px); /* 33.33% 너비 (세 개의 카드를 한 줄에 나타내기 위해) */
 }
-
 .user-info {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .profile-image {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  overflow: hidden;
   margin-bottom: 10px;
 }
 
-.profile-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.user-details {
+  text-align: center;
 }
 
-.user-details {
+.user-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
 }
 
 .username {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-right: 5px;
 }
 
-.user-stats {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
+.follow-status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #888888;
+  font-size: 12px;
+  padding: 3px 6px;
+  border: 1px solid #888888;
+  border-radius: 5px;
 }
 
-.user-stats span {
+.follow-back {
+  background-color: gold;
+  color: #ffffff;
+  border-color: gold;
+  color: black;
+}
+
+.age {
   margin-bottom: 5px;
 }
 
 .follow-button-container {
   display: flex;
   justify-content: center;
+  margin-top: 10px;
+}
+
+.follow-button,
+.unfollow-button {
+  width: 100px;
 }
 </style>
