@@ -1,14 +1,17 @@
 <template>
   <div class="profile-page">
-    <div class="profile-section">
+      <div class="profile-section">
       <my-profile />
     </div>
-    <div class="grass-section">
-      <grass-field />
-    </div>
-    <div class="article-section">
-      <div class="article">
-        여기는 게시글 목록입니다.
+    <div class="content-section">
+      <div class="grass-section">
+          <img src="../assets/yourggggparents.png" alt="묘" class="grass-image" />
+        <grass-field />
+      </div>
+      <div class="article-section">
+        <div class="article">
+          여기는 게시글 목록입니다.
+        </div>
       </div>
     </div>
   </div>
@@ -28,31 +31,43 @@ export default {
 }
 </script>
 
+
+
 <style scoped>
 .profile-page {
   display: flex;
   height: 100%;
 }
 
-.profile-section {
-  flex: 1;
-  width: 40%;
+.content-section {
+  display: flex;
+  width: 60%;
+  flex-direction: column;
 }
 
 .grass-section {
   flex: 1;
-  width: calc(60% - 600px);
-  margin-right: 20px;
+  margin-bottom: 200px;
+  margin-left: 10%;
+  margin-top: 5%;
 }
 
 .article-section {
   flex: 1;
-  width: 600px;
+  margin-right: 10px;
+}
+
+.profile-section {
+  width: 40%;
 }
 
 .article {
   background-color: #EDEDED;
-  height: calc(100% - 20px);
+  height: 100%;
   padding: 10px;
+}
+.grass-image {
+  width: 80%;
+  height: auto;
 }
 </style>
