@@ -34,7 +34,7 @@ export default {
 
         for (let row = 0; row < this.rows; row++) {
           const week = [];
-          for (let col = -1; col < this.columns; col++) {
+          for (let col = 0; col < this.columns; col++) {
           const date = new Date(today);
           const offset = col * this.rows + row;
           date.setDate(today.getDate() - offset);
@@ -75,6 +75,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  width: 350px; /* 고정된 너비 설정 */
+  height: 98px; /* 고정된 높이 설정 */
 }
 
 .grass-week {
@@ -82,13 +84,15 @@ export default {
 }
 
 .grass-day {
-  width: 12px;
-  height: 12px;
-  margin: 1px;
-  background-color: #ebedf0;
+  width: 17px;
+  height: 17px;
+  margin: 2.5px;
+  background-color: #d7d7d7;
+  box-shadow: 0 0 5px 2px #94f598; /* 테두리에 밝은 빛 효과 추가 */
 }
 
 .colored {
   background-color: green;
+  box-shadow: 0 0  #FFFF00;
 }
 </style>
